@@ -1,80 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nimbus — Personal Weather</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 </head>
-
 <body>
-    <div class="wrapper">
-        <div class="weather-app-container">
-            <h1 class="weather-text">WEATHER APP</h1>
-            <!-- search and your weather -->
-            <div class="user-info">
-                <p class="Your-weather">Your weather</p>
-                <p class="search-weather">Search Weather</p>
 
-            </div>
-            <!-- grant lcation section -->
-            <div class="grant-location-container">
-                <img src="assets/location.png" height="80" width="80">
-                <h2>Grant Location Access</h2>
-                <p class="text">Allow Access To Get Weather Information</p>
-                <button class="grant-access-btn" type="submit">GRANT ACCESS</button>
-                <!-- looder -->
-                <div class="loader">
-                    <img src="assets/loading.gif" height="80" width="80">
-                    <p>Loading</p>
-                </div>
+  <div id="bgScene"></div>
 
-            </div>
+  <div class="app-wrap">
 
-            <!-- your-weather-container -->
-            <div class="userWeather">
-                <div class="user-city"></div>
-                <img class="country-icon" height="30" width="30">
-                <img class="weather-icon" height="50" width="50">
-
-
-
-                <div class="user-weather-condition"></div>
-                <div class="user-temp"></div>
-                <div class="weather-info-card">
-                    <div class="windspeed">
-                        <img src="assets/wind.png" height="40" width="40">
-                        <p>WINDSPEED</p>
-                        <p class="data wind-speed"></p>
-                    </div>
-                    <div class="humidity">
-                        <img src="assets/humidity.png" height="40" width="40">
-                        <p>HUMIDITY</p>
-                        <p class="data humidity-value"></p>
-                    </div>
-                    <div class="cloud">
-                        <img src="assets/cloud.png" height="40" width="40">
-                        <p>CLOUDS</p>
-                        <p class="data cloud-value"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- search-weather -->
-           <!-- Search Weather -->
-<div class="search-weather-container">
-    <form class="searchForm">
-      <input type="text" placeholder="Search for city..." class="searchInput" />
-      <button class="search-btn" type="submit">
-        <img src="assets/search.png" height="20" width="20" />
-      </button>
-    </form>
-  </div>
-  
-        </div>
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="logo"><div class="logo-dot"></div>Nimbus</div>
+      <div class="topbar-controls">
+        <button class="icon-btn" id="themeBtn">🌙</button>
+        <button class="icon-btn" id="locationBtn">📍</button>
+      </div>
     </div>
-    <script src="script.js"></script>
-</body>
 
+    <!-- Search -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="Search any city worldwide…"/>
+      </div>
+      <button class="btn-primary" id="searchBtn">Search</button>
+    </div>
+
+    <!-- Favourites -->
+    <div class="favs-strip" id="favsStrip"></div>
+
+    <!-- Error -->
+    <div class="error-toast" id="errorToast">
+      <span>⚠️</span><span id="errorText"></span>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="alert-banner" id="alertBanner">
+      <span class="alert-icon">🚨</span>
+      <div class="alert-content">
+        <h4 id="alertTitle">Weather Alert</h4>
+        <p id="alertDesc"></p>
+      </div>
+    </div>
+
+    <!-- Grant Location -->
+    <div class="panel" id="grantPanel">
+      <span class="panel-icon">🌍</span>
+      <h2>Where in the world are you?</h2>
+      <p>Allow location access for instant local weather, or search any city above.</p>
+      <button class="btn-primary" id="grantBtn">Allow Location</button>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader-panel" id="loaderPanel">
+      <div class="spinner"></div>
+      <p>reading the atmosphere…</p>
+    </div>
+
+    <!-- Weather Content -->
+    <div class="weather-main" id="weatherMain">
+
+      <!-- Hero Card -->
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <div class="city-name">
+              <span id="cityName">—</span>
+              <img id="flagImg" src="" alt=""/>
+            </div>
+            <div class="city-sub" id="cityCoords"></div>
+          </div>
+          <div class="hero-controls">
+            <button class="unit-toggle active" id="celsiusBtn">°C</button>
+            <button class="unit-toggle" id="fahrenheitBtn">°F</button>
+            <span class="fav-btn" id="favBtn">🤍</span>
+          </div>
+        </div>
+        <div class="hero-body">
+          <div class="temp-block">
+            <div class="temp-big" id="mainTemp">—</div>
+            <div class="temp-meta">
+              <span class="feels-like">Feels like <strong id="feelsLike">—</strong></span>
+              <span class="hi-lo">
+                <span class="hi">↑<span id="tempMax">—</span></span>
+                <span class="lo">↓<span id="tempMin">—</span></span>
+              </span>
+            </div>
+          </div>
+          <div class="condition-block">
+            <span class="cond-icon" id="condIcon">🌤</span>
+            <div class="cond-label" id="condLabel">—</div>
+          </div>
+        </div>
+        <div class="rain-bar-wrap">
+          <span class="rain-bar-label">💧 Rain chance</span>
+          <div class="rain-bar-track"><div class="rain-bar-fill" id="rainFill"></div></div>
+          <span class="rain-pct" id="rainPct">—</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat"><div class="stat-icon">💨</div><div class="stat-lbl">Wind</div><div class="stat-val" id="sWind">—</div></div>
+          <div class="stat"><div class="stat-icon">💧</div><div class="stat-lbl">Humidity</div><div class="stat-val" id="sHumidity">—</div></div>
+          <div class="stat"><div class="stat-icon">☁️</div><div class="stat-lbl">Clouds</div><div class="stat-val" id="sClouds">—</div></div>
+          <div class="stat"><div class="stat-icon">👁</div><div class="stat-lbl">Visibility</div><div class="stat-val" id="sVisibility">—</div></div>
+        </div>
+      </div>
+
+      <!-- AQI -->
+      <div class="aqi-card" id="aqiCard">
+        <div class="aqi-header">
+          <h3>Air Quality Index</h3>
+          <span class="aqi-badge" id="aqiBadge">—</span>
+        </div>
+        <div class="aqi-scale">
+          <span class="aqi-num" id="aqiNum">—</span>
+          <div class="aqi-bar"><div class="aqi-bar-fill" id="aqiBarFill"></div></div>
+        </div>
+        <div class="aqi-info" id="aqiInfo"></div>
+      </div>
+
+      <!-- Hourly -->
+      <div class="section-card">
+        <div class="section-head"><span class="section-title">Hourly — Next 24 hrs</span></div>
+        <div class="hourly-scroll"><div class="hourly-row" id="hourlyRow"></div></div>
+      </div>
+
+      <!-- 5-Day -->
+      <div class="section-card">
+        <div class="section-head"><span class="section-title">5-Day Forecast</span></div>
+        <div class="forecast-list" id="forecastList"></div>
+      </div>
+
+      <!-- Details -->
+      <div class="section-card">
+        <div class="section-head"><span class="section-title">Detailed Conditions</span></div>
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-icon">🌡</span>
+            <span class="detail-lbl">Pressure</span>
+            <span class="detail-val" id="dPressure">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🌅</span>
+            <span class="detail-lbl">Sunrise / Sunset</span>
+            <span class="detail-val" id="dSunrise">—</span>
+            <span class="detail-sub" id="dSunset">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🔆</span>
+            <span class="detail-lbl">UV Index</span>
+            <span class="detail-val" id="dUV">—</span>
+            <div class="uv-bar"><div class="uv-dot" id="uvDot" style="left:0%"></div></div>
+            <span class="detail-sub" id="dUVAdvice"></span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🧭</span>
+            <span class="detail-lbl">Wind Direction</span>
+            <div class="compass-wrap">
+              <div class="compass">
+                <div class="compass-labels">
+                  <span class="cn">N</span><span class="cs">S</span>
+                  <span class="ce">E</span><span class="cw">W</span>
+                </div>
+                <div class="compass-needle" id="compassNeedle"></div>
+                <div class="compass-center"></div>
+              </div>
+              <div>
+                <div class="detail-val" id="dWindDir">—</div>
+                <div class="detail-sub" id="dWindSpeed">—</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">💦</span>
+            <span class="detail-lbl">Dew Point</span>
+            <span class="detail-val" id="dDew">—</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🌊</span>
+            <span class="detail-lbl">Sea Level Pressure</span>
+            <span class="detail-val" id="dSeaLevel">—</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /weather-main -->
+  </div><!-- /app-wrap -->
+
+  <script src="script.js"></script>
+</body>
 </html>
