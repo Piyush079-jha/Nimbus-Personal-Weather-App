@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌤 Nimbus — Personal Weather App
 
 A beautiful, feature-rich personal weather app built with vanilla HTML, CSS, and JavaScript. Powered by the OpenWeatherMap API with no frameworks or build tools required.
@@ -176,3 +177,6 @@ This project is open source and free to use for personal and educational purpose
 ---
 
 *Built with ❤️ using vanilla web technologies — no frameworks, no build tools, just HTML, CSS & JS.*
+=======
+# Nimbus-Personal-Weather-App
+>>>>>>> 48787405d64d5c1a373aef053411041bc4fff9e5
